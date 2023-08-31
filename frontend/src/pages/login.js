@@ -2,6 +2,8 @@ import logo from '../assets/avatar.jpg'
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { AuthContext } from '../App.js';
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string()
@@ -9,18 +11,29 @@ const SignupSchema = Yup.object().shape({
     .max(50, 'Максимум 50 букв')
     .required('Обязательное поле'),
   password: Yup.string()
-    .min(6, 'Минимум 6 букв')
+    .min(2, 'Минимум 2 букв')
     .max(12, 'Максимум 12 букв')
     .required('Обязательное поле'),
 });
 
 function MyForm() {
+  const { setAuth } = React.useContext(AuthContext);
+
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={({ username, password }, { setFieldError }) => {
+        axios.post('/api/v1/login', { username, password }).then((response) => {
+          //console.log(response.data); // => { token: ..., username: 'admin' }
+          const token = response.data.token;
+          localStorage.setItem('token', token);
+          setAuth(true);
+        }).catch((e) => {
+          if (e.code === "ERR_BAD_REQUEST") {
+            setFieldError('validation', 'Неверные имя пользователя или пароль');
+          }
+        })
       }}
     >
       {({ errors, touched }) => (
@@ -33,8 +46,7 @@ function MyForm() {
             required=""
             placeholder="Ваш ник"
             id="username"
-            className="form-control"
-            //defaultValue=""
+            className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
           />
           {errors.username && touched.username ? (
             <div>{errors.username}</div>
@@ -49,11 +61,10 @@ function MyForm() {
             placeholder="Пароль"
             type="password"
             id="password"
-            className="form-control"
-            //defaultValue=""
+            className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
           />
-          {errors.password && touched.password ? (
-            <div>{errors.password}</div>
+          {errors.validation ? (
+            <div className="invalid-tooltip">{errors.validation}</div>
           ) : null}
           <label className="form-label" htmlFor="password">
             Пароль
