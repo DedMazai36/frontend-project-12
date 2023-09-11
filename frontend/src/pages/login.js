@@ -28,6 +28,7 @@ function MyForm() {
           //console.log(response.data); // => { token: ..., username: 'admin' }
           const token = response.data.token;
           localStorage.setItem('token', token);
+          localStorage.setItem('login', username);
           setAuth(true);
         }).catch((e) => {
           if (e.code === "ERR_BAD_REQUEST") {
@@ -37,46 +38,46 @@ function MyForm() {
       }}
     >
       {({ errors, touched }) => (
-      <Form className="col-12 col-md-6 mt-3 mt-mb-0">
-        <h1 className="text-center mb-4">Войти</h1>
-        <div className="form-floating mb-3">
-          <Field
-            name="username"
-            autoComplete="username"
-            required=""
-            placeholder="Ваш ник"
-            id="username"
-            className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
-          />
-          {errors.username && touched.username ? (
-            <div>{errors.username}</div>
-          ) : null}
-          <label htmlFor="username">Ваш ник</label>
-        </div>
-        <div className="form-floating mb-4">
-          <Field
-            name="password"
-            autoComplete="current-password"
-            required=""
-            placeholder="Пароль"
-            type="password"
-            id="password"
-            className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
-          />
-          {errors.validation ? (
-            <div className="invalid-tooltip">{errors.validation}</div>
-          ) : null}
-          <label className="form-label" htmlFor="password">
-            Пароль
-          </label>
-        </div>
-        <button
-          type="submit"
-          className="w-100 mb-3 btn btn-outline-primary"
-        >
-          Войти
-        </button>
-      </Form>
+        <Form className="col-12 col-md-6 mt-3 mt-mb-0">
+          <h1 className="text-center mb-4">Войти</h1>
+          <div className="form-floating mb-3">
+            <Field
+              name="username"
+              autoComplete="username"
+              required=""
+              placeholder="Ваш ник"
+              id="username"
+              className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
+            />
+            {errors.username && touched.username ? (
+              <div>{errors.username}</div>
+            ) : null}
+            <label htmlFor="username">Ваш ник</label>
+          </div>
+          <div className="form-floating mb-4">
+            <Field
+              name="password"
+              autoComplete="current-password"
+              required=""
+              placeholder="Пароль"
+              type="password"
+              id="password"
+              className={`form-control ${errors.validation ? 'is-invalid' : ''}`}
+            />
+            {errors.validation ? (
+              <div className="invalid-tooltip">{errors.validation}</div>
+            ) : null}
+            <label className="form-label" htmlFor="password">
+              Пароль
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-100 mb-3 btn btn-outline-primary"
+          >
+            Войти
+          </button>
+        </Form>
       )}
     </Formik>
   );

@@ -4,21 +4,33 @@ import 'bootstrap';
 import './assets/application.scss';
 import LoginPage from './pages/login.js';
 import NotFound from './pages/notFound.js'
+import MainPage from './pages/main.js';
 
 const AuthContext = React.createContext(null);
+console.log(3)
 
 function App() {
-  const [auth, setAuth] = React.useState(false);
+  const [auth, setAuth] = React.useState(localStorage.getItem('token') ? true : false);
   //localStorage.clear();
-  if (localStorage.getItem('token') && auth === false) {
-    setAuth(true);
-  }
+  console.log(auth)
+  /*
+  const socket = io();
+  
+  socket.emit('newMessage', ['Privet'], (response) => {
+    console.log(response.status)
+  });
+  socket.on('newMessage', function(msg) {
+    console.log(msg)
+  })
+*/
+  //socket.emit('newMessage','Hello, my name is Client');
+
   return (
     <AuthContext.Provider value={{auth, setAuth}}>
       <BrowserRouter>
         <Routes>
           <Route path='*' element={<NotFound />} />
-          <Route path="/" element={auth ? <div>Pidor</div> : <Navigate to="/login" />} />
+          <Route path="/" element={auth ? <MainPage /> : <Navigate to="/login" />} />
           <Route path="/login" element={auth ? <Navigate to="/" /> : <LoginPage />} />
         </Routes>
       </BrowserRouter>
