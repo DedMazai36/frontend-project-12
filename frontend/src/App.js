@@ -5,9 +5,11 @@ import './assets/application.scss';
 import LoginPage from './pages/login.js';
 import NotFound from './pages/notFound.js'
 import MainPage from './pages/main.js';
+import { SignupPage } from './pages/signup';
+import './i18n';
 
 const AuthContext = React.createContext(null);
-console.log(3)
+//console.log(3)
 
 function App() {
   const [auth, setAuth] = React.useState(localStorage.getItem('token') ? true : false);
@@ -32,6 +34,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
           <Route path="/" element={auth ? <MainPage /> : <Navigate to="/login" />} />
           <Route path="/login" element={auth ? <Navigate to="/" /> : <LoginPage />} />
+          <Route path='/signup' element={auth ? <Navigate to="/" /> : <SignupPage />} />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>

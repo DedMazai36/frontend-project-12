@@ -12,8 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.6",
-    "lodash": "^4.17.21"
+    "@hexlet/chat-server": "^1.1.6"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"

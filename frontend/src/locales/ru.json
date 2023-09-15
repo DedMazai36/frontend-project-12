@@ -1,0 +1,76 @@
+{
+  "ru": {
+    "translation": {
+      "yup": {
+        "min_few": "Минимум {{count}} символа",
+        "min_many": "Минимум {{count}} символов",
+        "max_many": "Максимум {{count}} символов",
+        "required": "Обязательное поле",
+        "confirmPassword": "Пароли должны совпадать"
+      },
+      "header": {
+        "hexlet": "Hexlet Chat",
+        "escape": "Выйти"
+      },
+      "main": {
+        "channels": {
+          "management": "Управление каналом",
+          "delete": "Удалить",
+          "rename": "Переименовать"
+        },
+        "chat": {
+          "channels": "Каналы",
+          "messages_zero": "0 сообщений",
+          "messages_one": "1 сообщение",
+          "messages_few": "{{count}} сообщения",
+          "messages_many": "{{count}} сообщений",
+          "input": {
+            "label": "Новое сообщение",
+            "placeHolder": "Введите сообщение...",
+            "send": "Отправить"
+          }
+        }
+      },
+      "login": {
+        "form": {
+          "userPlaceHolder": "Ваш никнейм",
+          "passPlaceHolder": "Пароль",
+          "submit": "Войти"
+        },
+        "footer": {
+          "question": "Нет аккаунта?",
+          "href": "Регистрация"
+        }
+      },
+      "signup": {
+        "form": {
+          "userPlaceHolder": "Имя пользователя",
+          "passPlaceHolder": "Пароль",
+          "passSubmitPlaceHolder": "Подтвердите пароль",
+          "errorUsername": "Имя пользователя уже существует",
+          "submit": "Зарегистрироваться",
+          "header": "Регистрация"
+        }
+      },
+      "modal": {
+        "cancel": "Отменить",
+        "send": "Отправить",
+        "delete": "Удалить",
+        "addChannel": {
+          "header": "Добавить канал",
+          "label": "Имя канала",
+          "error": "Имя канала уже существует"
+        },
+        "renameChannel": {
+          "header": "Переименовать канал",
+          "label": "Имя канала",
+          "error": "Должно быть уникальным"
+        },
+        "deleteChannel": {
+          "header": "Удалить канал",
+          "label": "Уверены?"
+        }
+      }
+    }
+  }
+}
