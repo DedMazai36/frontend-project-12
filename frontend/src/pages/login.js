@@ -1,7 +1,7 @@
 import logo from '../assets/avatar.jpg'
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+//import * as Yup from 'yup';
 import axios from 'axios';
 import { AuthContext } from '../App.js';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 const LoginForm = () => {
   const { setAuth } = React.useContext(AuthContext);
   const { t } = useTranslation();
+  /*
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
       .min(2, t('yup.min', {count: 2}))
@@ -21,11 +22,11 @@ const LoginForm = () => {
       .max(12, t('yup.max', {count: 12}))
       .required(t('yup.required')),
   });
-
+*/
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
-      validationSchema={SignupSchema}
+      //validationSchema={SignupSchema}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post('/api/v1/login', { username, password }).then((response) => {
           //console.log(response.data); // => { token: ..., username: 'admin' }
@@ -51,6 +52,7 @@ const LoginForm = () => {
               required=""
               placeholder={t('login.form.userPlaxeHolder')}
               id="username"
+              autoFocus
               className={`form-control ${errors.username ? 'is-invalid' : ''}`}
             />
             {errors.username && touched.username ? (

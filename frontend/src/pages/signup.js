@@ -12,11 +12,11 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, t('yup.min', {count: 3}))
-      .max(20, t('yup.max', {count: 20}))
+      .min(3, t('yup.user', {count: 3}))
+      .max(20, t('yup.user', {count: 20}))
       .required(t('yup.required')),
     password: Yup.string()
-      .min(6, t('yup.min', {count: 6}))
+      .min(6, t('yup.pass', {count: 6}))
       .required(t('yup.required')),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], t('yup.confirmPassword')),

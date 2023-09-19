@@ -1,19 +1,24 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 //import { useSelector, useDispatch } from 'react-redux';
 //import { getData } from '../slices/channelsSlice.js';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { date } from 'yup';
+//import { date } from 'yup';
 import { io } from 'socket.io-client';
-import _, { every, set } from 'lodash';
+import _ from 'lodash';
 //import { addData } from '../slices/channelsSlice';
 import { ModalAdd, ModalRename, ModalRemove } from './modal.js';
 import { AuthContext } from '../App.js';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import * as filter from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
-
-const renderUl = (state, setState, setActiveModalChannel, setActiveModal, activeModal) => {
+const ChannelsList = ({state, setState, setActiveModalChannel, setActiveModal, activeModal}) => {
   const { t } = useTranslation();
+
 
   if (Object.entries(state).length !== 0) {
     return (
@@ -114,6 +119,8 @@ const renderMessages = (state) => {
               {message.body}
             </div>
           )
+        } else {
+          return null;
         }
       })
     )
@@ -123,14 +130,18 @@ const renderMessages = (state) => {
 const socket = io();
 
 const MainPage = () => {
-  const [state, setState] = useState({ channels: [], messages: [], activeChannelId: 1, activeChannelName: ''});
+  const [state, setState] = useState({ channels: [], messages: [], activeChannelId: 1, activeChannelName: '' });
   const [errors, setErrors] = useState({ network: false, createChannel: false });
   const [activeModalChannel, setActiveModalChannel] = useState({});
   const [activeModal, setActiveModal] = useState({ addChannel: false, removeChannel: false, renameChannel: false });
   const [messageInput, setMessageInput] = useState('');
   const { setAuth } = React.useContext(AuthContext);
   const { t } = useTranslation();
-
+  filter.list();
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
+  const rollbar = useRollbar();
 
 
   function getData() {
@@ -148,20 +159,23 @@ const MainPage = () => {
       })
       .catch((err) => {
         console.log(err);
-        setErrors({ ...errors, network: 'Ошибка подключения к серверу при загрузке страницы' });
+        rollbar.error(t('toast.error.errorGet'), err);
+        toast.error(t('toast.error.errorGet'));
       });
   }
 
   function sendMessgae(event) {
     event.preventDefault();
     const inputValue = event.target[0].value;
+    const filterValue = filter.clean(inputValue);
     console.log(event.target)
-    socket.emit('newMessage', { body: inputValue, username: 'admin', channelID: state.activeChannelId }, (response) => {
+    socket.emit('newMessage', { body: filterValue, username: 'admin', channelID: state.activeChannelId }, (response) => {
       if (response.status === 'ok') {
         setMessageInput('');
         event.target[0].focus();
       } else {
-        setErrors({ ...errors, network: 'Ошибка отправки сообщения' });
+        toast.error(t('toast.error.errorSend'));
+        //setErrors({ ...errors, network: 'Ошибка отправки сообщения' });
       }
     });
   }
@@ -178,8 +192,10 @@ const MainPage = () => {
           setActiveModal({ ...activeModal, addChannel: false })
           setState({ ...state, activeChannelId: response.data.id, activeChannelName: response.data.name });
           event.target.reset();
+          toast.success(t('toast.success.addChannel'));
         } else {
-          setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
+          toast.error(t('toast.error.errorSend'));
+          //setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
         }
       })
     }
@@ -194,8 +210,10 @@ const MainPage = () => {
     if (!validation) {
       socket.emit('renameChannel', { id: activeModalChannel.id, name }, (response) => {
         if (!(response.status === 'ok')) {
-          setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
+          toast.error(t('toast.error.errorSend'));
+          //setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
         } else {
+          toast.success(t('toast.success.renameChannel'));
           setActiveModal({ ...activeModal, renameChannel: false });
         }
       })
@@ -207,8 +225,10 @@ const MainPage = () => {
       if (response.status === 'ok') {
         setActiveModal({ ...activeModal, removeChannel: false });
         setState({ ...state, activeChannelId: 1, activeChannelName: 'general' });
+        toast.success(t('toast.success.removeChannel'));
       } else {
-        setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
+        toast.error(t('toast.error.errorSend'));
+        //setErrors({ ...errors, network: 'Ошибка отправки данных на сервер' });
       }
     })
   }
@@ -242,6 +262,7 @@ const MainPage = () => {
     setState({ ...state, channels: newArrOfChannels });
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(getData, []);
 
   return (
@@ -284,7 +305,13 @@ const MainPage = () => {
                       <span className="visually-hidden">+</span>
                     </button>
                   </div>
-                  {renderUl(state, setState, setActiveModalChannel, setActiveModal, activeModal)}
+                  <ChannelsList
+                    state={state}
+                    setState={setState}
+                    setActiveModalChannel={setActiveModalChannel}
+                    setActiveModal={setActiveModal}
+                    activeModal={activeModal}
+                  />
                 </div>
                 <div className="col p-0 h-100">
                   <div className="d-flex flex-column h-100">
@@ -292,11 +319,11 @@ const MainPage = () => {
                       <p className="m-0">
                         <b>{`# ${state.activeChannelName}`}</b>
                       </p>
-                      <span className="text-muted">{t('main.chat.messages', {count: state.messages.filter((message) => message.channelID === state.activeChannelId).length})}</span>
+                      <span className="text-muted">{t('main.chat.messages', { count: state.messages.filter((message) => message.channelID === state.activeChannelId).length })}</span>
                     </div>
                     <div
                       id="messages-box"
-                      className="chat-messages overflow-auto px-5 "
+                      className="chat-messages overflow-auto px-5"
                     >
                       {renderMessages(state)}
                     </div>
@@ -346,7 +373,7 @@ const MainPage = () => {
       <ModalAdd show={activeModal.addChannel} handleClose={() => setActiveModal({ ...activeModal, addChannel: false })} addChannel={addChannel} errors={errors} />
       <ModalRename show={activeModal.renameChannel} handleClose={() => setActiveModal({ ...activeModal, renameChannel: false })} renameChannel={renameChannel} errors={errors} />
       <ModalRemove show={activeModal.removeChannel} handleClose={() => setActiveModal({ ...activeModal, removeChannel: false })} removeChannel={removeChannel} />
-
+      <ToastContainer />
     </>
   )
 }

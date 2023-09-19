@@ -2,15 +2,25 @@
   "ru": {
     "translation": {
       "yup": {
-        "min_few": "Минимум {{count}} символа",
-        "min_many": "Минимум {{count}} символов",
-        "max_many": "Максимум {{count}} символов",
+        "user": "От 3 до 20 символов",
+        "pass": "Не менее {{count}} символов",
         "required": "Обязательное поле",
         "confirmPassword": "Пароли должны совпадать"
       },
       "header": {
         "hexlet": "Hexlet Chat",
         "escape": "Выйти"
+      },
+      "toast": {
+        "success": {
+          "addChannel": "Канал создан",
+          "renameChannel": "Канал переименован",
+          "removeChannel": "Канал удален"
+        },
+        "error": {
+          "errorGet": "Ошибка соединения",
+          "errorSend": "Ошибка соединения"
+        }
       },
       "main": {
         "channels": {
@@ -33,7 +43,7 @@
       },
       "login": {
         "form": {
-          "userPlaceHolder": "Ваш никнейм",
+          "userPlaceHolder": "Ваш ник",
           "passPlaceHolder": "Пароль",
           "submit": "Войти"
         },
