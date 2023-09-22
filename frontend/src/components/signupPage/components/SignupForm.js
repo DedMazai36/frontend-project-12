@@ -2,14 +2,14 @@ import React from "react";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { AuthContext } from '../App.js';
-import logo from '../assets/avatar_1.jpg';
 import { useTranslation } from 'react-i18next';
+import routes from "../../../routes.js";
+import { useAuthContext } from "../../../context/AuthContext.js";
 
-
-const LoginForm = () => {
-  const { setAuth } = React.useContext(AuthContext);
+const SignupForm = () => {
+  const { setAuth } = useAuthContext();
   const { t } = useTranslation();
+  
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, t('yup.user', {count: 3}))
@@ -27,8 +27,7 @@ const LoginForm = () => {
       initialValues={{ username: "", password: "", confirmPassword: "" }}
       validationSchema={SignupSchema}
       onSubmit={({ username, password }, { setFieldError }) => {
-        axios.post('/api/v1/signup', { username, password }).then((response) => {
-          //console.log(response.data); // => { token: ..., username: 'admin' }
+        axios.post(routes.signupPath(), { username, password }).then((response) => {
           const token = response.data.token;
           localStorage.setItem('token', token);
           localStorage.setItem('login', username);
@@ -102,47 +101,6 @@ const LoginForm = () => {
       )}
     </Formik>
   );
-}
-
-const SignupPage = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="h-100">
-      <div className="h-100" id="chat">
-        <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-            <div className="container">
-              <a className="navbar-brand" href="/">
-                {t('header.hexlet')}
-              </a>
-            </div>
-          </nav>
-          <div className="container-fluid h-100">
-            <div className="row justify-content-center align-content-center h-100">
-              <div className="col-12 col-md-8 col-xxl-6">
-                <div className="card shadow-sm">
-                  <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                    <div>
-                      <img
-                        src={logo}
-                        className="rounded-circle"
-                        alt={t('signup.form.header')}
-                      />
-                    </div>
-                    <LoginForm />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="Toastify" />
-      </div>
-    </div>
-
-
-  )
 };
 
-export { SignupPage };
+export default SignupForm;

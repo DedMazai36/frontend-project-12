@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import './index.css';
 import { App } from './App.js';
-import store from './store.js';
+import store from './store';
+import MyAuthContextProvider from './context/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  //<React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    <MyAuthContextProvider>
       <App />
-    </Provider>
-  //</React.StrictMode>
+    </MyAuthContextProvider>
+  </Provider>
 );
