@@ -15,7 +15,7 @@
         "success": {
           "addChannel": "Канал создан",
           "renameChannel": "Канал переименован",
-          "removeChannel": "Канал удален"
+          "removeChannel": "Канал удалён"
         },
         "error": {
           "errorGet": "Ошибка соединения",
