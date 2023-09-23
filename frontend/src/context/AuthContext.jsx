@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext, useContext, useState, useMemo,
+} from 'react';
 
 const AuthContext = createContext();
 
@@ -6,7 +8,7 @@ const MyAuthContextProvider = ({ children }) => {
   const [auth, setAuth] = useState(!!localStorage.getItem('token'));
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={useMemo(() => ({ auth, setAuth }), [auth, setAuth])}>
       {children}
     </AuthContext.Provider>
   );

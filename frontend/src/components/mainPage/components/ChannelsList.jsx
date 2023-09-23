@@ -76,8 +76,7 @@ const ChannelsList = () => {
             ) : null}
           </div>
         </li>
-      )
-      )}
+      ))}
     </ul>
   );
 };
