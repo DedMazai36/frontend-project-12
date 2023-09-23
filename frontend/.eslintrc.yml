@@ -1,13 +1,13 @@
 env:
   browser: true
   es2021: true
+  jest: true
 
 extends:
   - airbnb
   - plugin:react/recommended
   - plugin:functional/recommended
   - plugin:react-hooks/recommended
-  - react-app
 
 parserOptions:
   ecmaFeatures:
@@ -20,10 +20,8 @@ plugins:
   - functional
 
 rules:
-  no-param-reassign: 0
   import/extensions: 0
   import/no-unresolved: 0
-  import/no-anonymous-default-export: 0
   react/prop-types: 0
   no-console: 0
   react/react-in-jsx-scope: 0
@@ -34,7 +32,6 @@ rules:
   functional/no-try-statement: 0
   functional/no-throw-statement: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
-  react/function-component-definition:
-    [2, { "namedComponents": "arrow-function" }]
+  react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
   testing-library/no-debug: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]

@@ -12,7 +12,7 @@ import { useAuthContext } from './context/AuthContext';
 import SignupPage from './components/signupPage/SignupPage';
 import { ToastContainer } from 'react-toastify';
 
-function App() {
+const App = () => {
   const auth = useAuthContext().auth;
 
   const rollbarConfig = {

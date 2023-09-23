@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import routes from '../../../routes.js';
-import { useAuthContext } from '../../../context/AuthContext.js';
+import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
