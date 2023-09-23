@@ -28,8 +28,9 @@ const ChannelsList = () => {
               <span className="me-1">#</span>
               {channel.name}
             </button>
-            {channel.removable ?
-              <>
+            {channel.removable
+              ?
+              (<>
                 <button
                   type="button"
                   id="react-aria6940569620-1"
@@ -72,10 +73,10 @@ const ChannelsList = () => {
                     {t('main.channels.rename')}
                   </a>
                 </div>
-              </> : null}
+              </>) : null}
           </div>
-        </li>
-      )}
+        </li>,
+      )};
     </ul>
   );
 };

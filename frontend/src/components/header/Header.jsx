@@ -15,10 +15,12 @@ const MyNav = () => {
           {t('header.hexlet')}
         </a>
         {
-          auth ?
-            (<button type="button" className="btn btn-primary" onClick={() => { localStorage.clear(); setAuth(false); }}>
+          auth
+            ?
+            <button type="button" className="btn btn-primary" onClick={() => { localStorage.clear(); setAuth(false); }}>
               {t('header.escape')}
-            </button>) :
+            </button>
+            :
             null
         }
       </div>
