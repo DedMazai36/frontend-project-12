@@ -9,6 +9,8 @@ extends:
   - plugin:functional/recommended
   - plugin:react-hooks/recommended
 
+parser: "@typescript-eslint/parser"
+
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -16,8 +18,7 @@ parserOptions:
   sourceType: module
 
 plugins:
-  - react
-  - functional
+
 
 rules:
   import/extensions: 0

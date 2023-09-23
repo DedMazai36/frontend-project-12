@@ -31,17 +31,20 @@ const App = () => {
             <Route
               path={routes.chatRoute()}
               element={
-                auth ? <MainPage /> : <Navigate to={routes.loginRoute()} />}
+                auth ? <MainPage /> : <Navigate to={routes.loginRoute()} />
+              }
             />
             <Route
               path={routes.loginRoute()}
               element={
-                auth ? <Navigate to={routes.chatRoute()} /> : <LoginPage />}
+                auth ? <Navigate to={routes.chatRoute()} /> : <LoginPage />
+              }
             />
             <Route
               path={routes.signupRoute()}
               element={
-                auth ? <Navigate to={routes.chatRoute()} /> : <SignupPage />}
+                auth ? <Navigate to={routes.chatRoute()} /> : <SignupPage />
+              }
             />
           </Routes>
           <ToastContainer />
