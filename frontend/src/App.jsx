@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap';
 import './assets/application.scss';
 import LoginPage from './components/loginPage/LoginPage';
-import NotFound from './components/notFoundPage/notFound.js'
+import NotFound from './components/notFoundPage/notFound'
 import './i18n';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import MainPage from './components/mainPage/MainPage';
