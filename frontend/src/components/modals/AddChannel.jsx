@@ -1,14 +1,14 @@
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice';
-import _ from 'lodash';
-import { useState } from 'react';
 import { addChannel, clearStatus } from '../../store/slices/emitSlice';
 import { selectors } from '../../store/slices/channelsSlice';
-import { toast } from 'react-toastify';
 
 const ModalAdd = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ const ModalAdd = () => {
         <Form onSubmit={submit}>
           <Form.Control
             type="name"
-            id='name'
+            id="name"
             autoFocus
             className={error ? 'mb-2 is-invalid' : 'mb-2'}
           />
@@ -51,14 +51,14 @@ const ModalAdd = () => {
             <Button className="me-2 btn btn-secondary" onClick={() => dispatch(closeModal())}>
               {t('modal.cancel')}
             </Button>
-            <Button className="btn btn-primary" type='submit'>
+            <Button className="btn btn-primary" type="submit">
               {t('modal.send')}
             </Button>
           </div>
         </Form>
       </Modal.Body>
     </>
-  )
+  );
 };
 
 export default ModalAdd;

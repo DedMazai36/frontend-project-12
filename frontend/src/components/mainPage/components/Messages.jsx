@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useState, useRef } from "react";
-import { sendMessgae } from "../../../store/slices/emitSlice";
-import { selectors } from "../../../store/slices/messagesSlice";
-import { getCurrentChannelId, getCurrentChannelName } from "../../../store/slices/channelsSlice";
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { sendMessgae } from '../../../store/slices/emitSlice';
+import { selectors } from '../../../store/slices/messagesSlice';
+import { getCurrentChannelId, getCurrentChannelName } from '../../../store/slices/channelsSlice';
 
 const Messages = () => {
   const [input, setInput] = useState('');
@@ -17,8 +16,8 @@ const Messages = () => {
   const inputElement = useRef();
 
   function handleChangeMessage(event) {
-    setInput(event.target.value)
-  };
+    setInput(event.target.value);
+  }
 
   function submit(event) {
     event.preventDefault();
@@ -30,7 +29,7 @@ const Messages = () => {
     }));
 
     setInput('');
-  };
+  }
 
   useEffect(() => {
     inputElement.current.focus();
@@ -54,14 +53,12 @@ const Messages = () => {
           {messages.map((message) => {
             if (message.channelID === currentChannelId) {
               return (
-                <div key={message.id} className='text-break mb-2'>
+                <div key={message.id} className="text-break mb-2">
                   <b>{message.username}</b>
                   {': '}
                   {message.body}
                 </div>
-              )
-            } else {
-              return null;
+              );
             }
           })}
         </div>
@@ -76,11 +73,10 @@ const Messages = () => {
                 value={input}
                 onChange={handleChangeMessage}
                 ref={inputElement}
-                autoFocus
               />
               <button
                 type="submit"
-                disabled={input === '' ? true : false}
+                disabled={!input}
                 className="btn btn-group-vertical"
               >
                 <svg
@@ -102,7 +98,7 @@ const Messages = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Messages;

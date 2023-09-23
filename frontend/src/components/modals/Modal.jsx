@@ -14,13 +14,13 @@ const MyModal = () => {
     rename: ModalRename,
   };
 
-  const Component = modals[modalData.type]
+  const Component = modals[modalData.type];
 
   return (
-    <Modal show={modalData.show} onHide={() => {dispatch(closeModal())}} centered>
+    <Modal show={modalData.show} onHide={() => dispatch(closeModal())} centered>
       {Component && <Component />}
     </Modal>
-  )
+  );
 };
 
 export default MyModal;

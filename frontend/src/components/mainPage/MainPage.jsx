@@ -1,16 +1,15 @@
-import React from "react";
-import Channels from "./components/Channels";
-import Messages from "./components/Messages";
-import MyModal from "../modals/Modal";
-import MyNav from "../header/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { clearError, fetchData } from "../../store/slices/dataSlice";
-import { clearStatus, socket } from "../../store/slices/emitSlice";
-import { addMessage } from "../../store/slices/messagesSlice";
-import { addChannel, removeChannel, renameChannel } from "../../store/slices/channelsSlice";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
+import Channels from './components/Channels';
+import Messages from './components/Messages';
+import MyModal from '../modals/Modal';
+import MyNav from '../header/Header';
+import { clearError, fetchData } from '../../store/slices/dataSlice';
+import { clearStatus, socket } from '../../store/slices/emitSlice';
+import { addMessage } from '../../store/slices/messagesSlice';
+import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -21,11 +20,11 @@ const MainPage = () => {
   if (fetchError) {
     toast.error(t('toast.error.errorGet'));
     dispatch(clearError());
-  };
+  }
   if (sendStatus === 'error') {
     toast.error(t('toast.error.errorSend'));
     dispatch(clearStatus());
-  };
+  }
 
   useEffect(() => {
     dispatch(fetchData());
@@ -42,7 +41,6 @@ const MainPage = () => {
     socket.on('renameChannel', (payload) => {
       dispatch(renameChannel({ id: payload.id, changes: payload }));
     });
-
   }, [dispatch]);
 
   return (
@@ -62,8 +60,7 @@ const MainPage = () => {
       </div>
       <MyModal />
     </>
-  )
-
+  );
 };
 
 export default MainPage;

@@ -1,10 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+/* eslint-disable no-param-reassign */
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import routes from '../../routes';
 
 export const fetchData = createAsyncThunk(
   'data/fetchData',
-  async function () {
+  async function getData() {
     const token = localStorage.getItem('token');
     const response = await axios.get(routes.dataPath(), {
       headers: {
@@ -14,7 +15,7 @@ export const fetchData = createAsyncThunk(
     const data = await response.data;
 
     return data;
-  }
+  },
 );
 
 const dataSlice = createSlice({
@@ -27,7 +28,7 @@ const dataSlice = createSlice({
   reducers: {
     clearError(state) {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,8 +42,8 @@ const dataSlice = createSlice({
       })
       .addCase(fetchData.rejected, (state) => {
         state.error = 'fetchData';
-      }) 
-  }
+      });
+  },
 });
 
 export const { clearError } = dataSlice.actions;

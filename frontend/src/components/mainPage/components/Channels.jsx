@@ -29,8 +29,7 @@ const Channels = () => {
       </div>
       <ChannelsList />
     </div>
-  )
-
+  );
 };
 
 export default Channels;

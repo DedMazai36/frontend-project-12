@@ -20,13 +20,14 @@ const NotFoundPage = () => {
             />
             <h1 className="h4 text-muted">{t('notFound.error')}</h1>
             <p className="text-muted">
-              {t('notFound.visit')} <a href={routes.chatRoute()}>{t('notFound.mainPage')}</a>
+              {t('notFound.visit')}
+              <a href={routes.chatRoute()}>{t('notFound.mainPage')}</a>
             </p>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NotFoundPage;

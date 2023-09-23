@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { io } from 'socket.io-client';
 import * as filter from 'leo-profanity';
 
@@ -11,58 +12,57 @@ filter.add(filter.getDictionary('ru'));
 
 export const sendMessgae = createAsyncThunk(
   'data/sendMessgae',
-  async function (payload) {
+  async function newMessage(payload) {
     const filterValue = filter.clean(payload.text);
 
     const response = await new Promise((resolve) => {
-      socket.emit('newMessage', { body: filterValue, username: payload.username, channelID: payload.channelID }, (response) => {
-        resolve(response.status);
+      socket.emit('newMessage', { body: filterValue, username: payload.username, channelID: payload.channelID }, (data) => {
+        resolve(data.status);
       });
     });
 
     return response;
-  }
+  },
 );
 
 export const addChannel = createAsyncThunk(
   'data/addChannel',
-  async function (payload) {
+  async function newChannel(payload) {
     const response = await new Promise((resolve) => {
-      socket.emit('newChannel', { name: payload }, (response) => {
-        resolve(response.status);
+      socket.emit('newChannel', { name: payload }, (data) => {
+        resolve(data.status);
       });
     });
 
     return response;
-  }
+  },
 );
 
 export const removeChannel = createAsyncThunk(
   'data/removeChannel',
-  async function (id) {
+  async function removeChannel(id) {
     const response = await new Promise((resolve) => {
-      socket.emit('removeChannel', { id }, (response) => {
-        resolve(response.status);
+      socket.emit('removeChannel', { id }, (data) => {
+        resolve(data.status);
       });
     });
 
     return response;
-  }
+  },
 );
 
 export const renameChannel = createAsyncThunk(
   'data/renameChannel',
-  async function ({ id, name }) {
+  async function renameChannel({ id, name }) {
     const response = await new Promise((resolve) => {
-      socket.emit('renameChannel', { id, name }, (response) => {
-        resolve(response.status);
+      socket.emit('renameChannel', { id, name }, (data) => {
+        resolve(data.status);
       });
     });
 
     return response;
-  }
+  },
 );
-
 
 const emitSlice = createSlice({
   name: 'emit',
@@ -72,7 +72,7 @@ const emitSlice = createSlice({
   reducers: {
     clearStatus(state) {
       state.status = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,8 +115,8 @@ const emitSlice = createSlice({
         } else {
           state.status = 'error';
         }
-      })
-  }
+      });
+  },
 });
 
 export const { clearStatus } = emitSlice.actions;

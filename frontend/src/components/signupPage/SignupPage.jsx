@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '../../assets/avatar_1.jpg';
-import SignupForm from "./components/SignupForm";
-import MyNav from "../header/Header";
+import SignupForm from './components/SignupForm';
+import MyNav from '../header/Header';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -33,7 +33,7 @@ const SignupPage = () => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default SignupPage;

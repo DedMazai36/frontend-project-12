@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const modalSlice = createSlice({
   name: 'modal',
@@ -26,7 +27,7 @@ const modalSlice = createSlice({
       state.data = null;
       state.type = '';
       state.show = false;
-    }
+    },
   },
 });
 

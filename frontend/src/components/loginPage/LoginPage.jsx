@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import LoginForm from "./components/LoginForm";
-import logo from '../../assets/avatar.jpg'
-import routes from "../../routes";
-import MyNav from "../header/Header";
+import MyLoginForm from './components/LoginForm';
+import logo from '../../assets/avatar.jpg';
+import routes from '../../routes';
+import MyNav from '../header/Header';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -21,11 +21,12 @@ const LoginPage = () => {
                     <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                       <img className="rounded-circle" alt={t('login.form.submit')} src={logo} />
                     </div>
-                    <LoginForm />
+                    <MyLoginForm />
                   </div>
                   <div className="card-footer p-4">
                     <div className="text-center">
-                      <span>{t('login.footer.question')}</span> <a href={routes.signupRoute()}>{t('login.footer.href')}</a>
+                      <span>{t('login.footer.question')}</span>
+                      <a href={routes.signupRoute()}>{t('login.footer.href')}</a>
                     </div>
                   </div>
                 </div>

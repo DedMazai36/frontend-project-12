@@ -1,14 +1,13 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice';
 import { clearStatus, removeChannel } from '../../store/slices/emitSlice';
-import { toast } from 'react-toastify';
-
 
 const ModalRemove = () => {
-  const channelID = useSelector((state) => state.modal.data)
+  const channelID = useSelector((state) => state.modal.data);
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -17,7 +16,7 @@ const ModalRemove = () => {
     dispatch(closeModal());
     toast.success(t('toast.success.removeChannel'));
     dispatch(clearStatus());
-  }
+  };
 
   return (
     <>
@@ -36,7 +35,7 @@ const ModalRemove = () => {
         </div>
       </Modal.Body>
     </>
-  )
+  );
 };
 
 export default ModalRemove;

@@ -1,14 +1,14 @@
+import { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice';
-import { useEffect, useRef, useState } from 'react';
-import _ from 'lodash';
 import { clearStatus, renameChannel } from '../../store/slices/emitSlice';
 import { selectors } from '../../store/slices/channelsSlice';
-import { toast } from 'react-toastify';
 
 const ModalRename = () => {
   const [error, setError] = useState(null);
@@ -22,11 +22,11 @@ const ModalRename = () => {
     event.preventDefault();
 
     const inputValue = event.target[0].value;
-    const channelsNames = channels.map((channel) => channel.name);
+    const channelsNames = channels.map((element) => element.name);
     const isUnique = !_.includes(channelsNames, inputValue);
     if (isUnique) {
       setError(null);
-      dispatch(renameChannel({id: channel.id, name: inputValue}));
+      dispatch(renameChannel({ id: channel.id, name: inputValue }));
       dispatch(closeModal());
       toast.success(t('toast.success.renameChannel'));
       dispatch(clearStatus());
@@ -37,7 +37,7 @@ const ModalRename = () => {
 
   useEffect(() => {
     input.current.select();
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <>
@@ -48,7 +48,7 @@ const ModalRename = () => {
         <Form onSubmit={submit}>
           <Form.Control
             type="name"
-            id='name'
+            id="name"
             autoFocus
             className={error ? 'mb-2 is-invalid' : 'mb-2'}
             defaultValue={channel.name}
@@ -60,14 +60,14 @@ const ModalRename = () => {
             <Button className="me-2 btn btn-secondary" onClick={() => dispatch(closeModal())}>
               {t('modal.cancel')}
             </Button>
-            <Button className="btn btn-primary" type='submit'>
+            <Button className="btn btn-primary" type="submit">
               {t('modal.send')}
             </Button>
           </div>
         </Form>
       </Modal.Body>
     </>
-  )
+  );
 };
 
 export default ModalRename;

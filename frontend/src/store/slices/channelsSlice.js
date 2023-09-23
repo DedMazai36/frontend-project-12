@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { fetchData } from './dataSlice';
 
@@ -22,13 +23,13 @@ const channelsSlice = createSlice({
       state.currentChannelName = payload.name;
     },
     addChannels: channelsAdapter.addMany,
-    renameChannel(state, {payload}) {
+    renameChannel(state, { payload }) {
       channelsAdapter.updateOne(state, payload);
       if (payload.id === state.currentChannelId) {
         state.currentChannelName = payload.changes.name;
       }
     },
-    removeChannel(state, {payload}) {
+    removeChannel(state, { payload }) {
       channelsAdapter.removeOne(state, payload);
       if (payload === state.currentChannelId) {
         state.currentChannelId = state.defaultId;
@@ -44,11 +45,15 @@ const channelsSlice = createSlice({
     builder
       .addCase(fetchData.fulfilled, (state, action) => {
         channelsAdapter.addMany(state, action.payload.channels);
-        state.currentChannelId = action.payload.currentChannelId;
-        state.defaultId = action.payload.currentChannelId;
-        state.currentChannelName = action.payload.channels.filter((channel) => channel.id === action.payload.currentChannelId)[0].name;
-        state.defaultName = action.payload.channels.filter((channel) => channel.id === action.payload.currentChannelId)[0].name;
-      })
+        const id = action.payload.currentChannelId;
+        const name = action.payload.channels.filter((channel) => {
+          return channel.id === action.payload.currentChannelId;
+        })[0].name;
+        state.currentChannelId = id;
+        state.defaultId = id;
+        state.currentChannelName = name;
+        state.defaultName = name;
+      });
   },
 });
 

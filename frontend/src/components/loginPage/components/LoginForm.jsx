@@ -7,23 +7,23 @@ import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
-  const setAuth = useAuthContext().setAuth;
+  const { setAuth } = useAuthContext();
 
   return (
     <Formik
-      initialValues={{ username: "", password: "" }}
+      initialValues={{ username: '', password: '' }}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.loginPath(), { username, password }).then((response) => {
-          const token = response.data.token;
+          const { token } = response.data;
           localStorage.setItem('token', token);
           localStorage.setItem('login', username);
           setAuth(true);
         }).catch((e) => {
-          if (e.code === "ERR_BAD_REQUEST") {
+          if (e.code === 'ERR_BAD_REQUEST') {
             setFieldError('username', ' ');
             setFieldError('password', t('login.form.error'));
           }
-        })
+        });
       }}
     >
       {({ errors, touched }) => (
