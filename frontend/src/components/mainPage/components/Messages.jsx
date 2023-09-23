@@ -51,12 +51,12 @@ const Messages = () => {
           ref={chat}
         >
           {messages.map((message) => {
-            message.channelID === currentChannelId ?
-              (<div key={message.id} className="text-break mb-2">
+            return message.channelID === currentChannelId ?
+              <div key={message.id} className="text-break mb-2">
                 <b>{message.username}</b>
                 {': '}
                 {message.body}
-              </div>) : null;
+              </div> : null;
           })}
         </div>
         <div className="mt-auto px-5 py-3">
