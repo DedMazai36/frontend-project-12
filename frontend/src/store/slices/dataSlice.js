@@ -5,7 +5,7 @@ import routes from '../../routes';
 
 export const fetchData = createAsyncThunk(
   'data/fetchData',
-  async function getData() {
+  async () => {
     const token = localStorage.getItem('token');
     const response = await axios.get(routes.dataPath(), {
       headers: {

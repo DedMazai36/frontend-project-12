@@ -12,7 +12,7 @@ filter.add(filter.getDictionary('ru'));
 
 export const sendMessgae = createAsyncThunk(
   'data/sendMessgae',
-  async function newMessage(payload) {
+  async (payload) => {
     const filterValue = filter.clean(payload.text);
 
     const response = await new Promise((resolve) => {
@@ -27,7 +27,7 @@ export const sendMessgae = createAsyncThunk(
 
 export const addChannel = createAsyncThunk(
   'data/addChannel',
-  async function newChannel(payload) {
+  async (payload) => {
     const response = await new Promise((resolve) => {
       socket.emit('newChannel', { name: payload }, (data) => {
         resolve(data.status);
@@ -40,7 +40,7 @@ export const addChannel = createAsyncThunk(
 
 export const removeChannel = createAsyncThunk(
   'data/removeChannel',
-  async function removeChannel(id) {
+  async (id) => {
     const response = await new Promise((resolve) => {
       socket.emit('removeChannel', { id }, (data) => {
         resolve(data.status);
@@ -53,7 +53,7 @@ export const removeChannel = createAsyncThunk(
 
 export const renameChannel = createAsyncThunk(
   'data/renameChannel',
-  async function renameChannel({ id, name }) {
+  async ({ id, name }) => {
     const response = await new Promise((resolve) => {
       socket.emit('renameChannel', { id, name }, (data) => {
         resolve(data.status);

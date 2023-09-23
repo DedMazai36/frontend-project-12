@@ -1,34 +1,34 @@
-import React from "react";
+import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import routes from "../../../routes.js";
-import { useAuthContext } from "../../../context/AuthContext.jsx";
+import routes from '../../../routes.js';
+import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 const SignupForm = () => {
   const { setAuth } = useAuthContext();
   const { t } = useTranslation();
-  
+
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, t('yup.user', {count: 3}))
-      .max(20, t('yup.user', {count: 20}))
+      .min(3, t('yup.user', { count: 3 }))
+      .max(20, t('yup.user', { count: 20 }))
       .required(t('yup.required')),
     password: Yup.string()
-      .min(6, t('yup.pass', {count: 6}))
+      .min(6, t('yup.pass', { count: 6 }))
       .required(t('yup.required')),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], t('yup.confirmPassword')),
+      .oneOf([Yup.ref('password'), null], t('yup.confirmPassword')),
   });
 
   return (
     <Formik
-      initialValues={{ username: "", password: "", confirmPassword: "" }}
+      initialValues={{ username: '', password: '', confirmPassword: '' }}
       validationSchema={SignupSchema}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.signupPath(), { username, password }).then((response) => {
-          const token = response.data.token;
+          const { token } = response.data;
           localStorage.setItem('token', token);
           localStorage.setItem('login', username);
           setAuth(true);
@@ -37,7 +37,7 @@ const SignupForm = () => {
             setFieldError('username', ' ');
             setFieldError('password', ' ');
             setFieldError('confirmPassword', t('signup.form.errorUsername'));
-          })
+          });
       }}
     >
       {({ errors, touched }) => (
@@ -53,7 +53,9 @@ const SignupForm = () => {
               className={`form-control ${errors.username ? 'is-invalid' : ''}`}
             />
             {errors.username && touched.username ? (
-              <div className="invalid-tooltip"> {errors.username}</div>
+              <div className="invalid-tooltip">
+                {errors.username}
+              </div>
             ) : null}
             <label htmlFor="username">{t('signup.form.userPlaceHolder')}</label>
           </div>
@@ -71,7 +73,7 @@ const SignupForm = () => {
               <div className="invalid-tooltip">{errors.password}</div>
             ) : null}
             <label className="form-label" htmlFor="password">
-            {t('signup.form.passPlaceHolder')}
+              {t('signup.form.passPlaceHolder')}
             </label>
           </div>
           <div className="form-floating mb-4">
@@ -88,7 +90,7 @@ const SignupForm = () => {
               <div className="invalid-tooltip">{errors.confirmPassword}</div>
             ) : null}
             <label className="form-label" htmlFor="confirmPassword">
-            {t('signup.form.passSubmitPlaceHolder')}
+              {t('signup.form.passSubmitPlaceHolder')}
             </label>
           </div>
           <button
