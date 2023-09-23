@@ -50,14 +50,14 @@ const Messages = () => {
           className="chat-messages overflow-auto px-5"
           ref={chat}
         >
-          {messages.map((message) => message.channelID === currentChannelId
-            ?
-            <div key={message.id} className="text-break mb-2">
-              <b>{message.username}</b>
-              {': '}
-              {message.body}
-            </div>
-            : null
+          {messages.map((message) =>
+            message.channelID === currentChannelId ? (
+              <div key={message.id} className="text-break mb-2">
+                <b>{message.username}</b>
+                {': '}
+                {message.body}
+              </div>
+            ) : null
           )}
         </div>
         <div className="mt-auto px-5 py-3">
@@ -97,6 +97,6 @@ const Messages = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Messages;

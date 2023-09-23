@@ -46,9 +46,7 @@ const channelsSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         channelsAdapter.addMany(state, action.payload.channels);
         const id = action.payload.currentChannelId;
-        const { name } = action.payload.channels.filter((channel) =>
-          channel.id === action.payload.currentChannelId
-        )[0];
+        const { name } = action.payload.channels.filter((channel) => channel.id === id)[0];
         state.currentChannelId = id;
         state.defaultId = id;
         state.currentChannelName = name;

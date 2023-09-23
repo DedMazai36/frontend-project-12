@@ -15,21 +15,20 @@ const ChannelsList = () => {
       id="channels-box"
       className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
     >
-      {channels.map((channel) => (<li key={channel.id} className="nav-item w-100">
-        <div role="group" className="d-flex dropdown btn-group">
-          <button
-            type="button"
-            onClick={() => {
-              dispatch(changeCurrentChannelId({ id: channel.id, name: channel.name }));
-            }}
-            className={currentChannelId === channel.id ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
-          >
-            <span className="me-1">#</span>
-            {channel.name}
-          </button>
-          {channel.removable
-            ?
-            (
+      {channels.map((channel) => (
+        <li key={channel.id} className="nav-item w-100">
+          <div role="group" className="d-flex dropdown btn-group">
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(changeCurrentChannelId({ id: channel.id, name: channel.name }));
+              }}
+              className={currentChannelId === channel.id ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+            >
+              <span className="me-1">#</span>
+              {channel.name}
+            </button>
+            {channel.removable ? (
               <>
                 <button
                   type="button"
@@ -75,8 +74,8 @@ const ChannelsList = () => {
                 </div>
               </>
             ) : null}
-        </div>
-      </li>
+          </div>
+        </li>
       )
       )}
     </ul>
