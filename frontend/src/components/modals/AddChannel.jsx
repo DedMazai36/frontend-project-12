@@ -4,11 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { closeModal } from '../../store/slices/modalSlice';
 import { addChannel, clearStatus } from '../../store/slices/emitSlice';
 import { selectors } from '../../store/slices/channelsSlice';
+import MyFooter from './components/Footer';
+import MyModalHeader from './components/Header';
 
 const ModalAdd = () => {
   const { t } = useTranslation();
@@ -34,9 +35,7 @@ const ModalAdd = () => {
 
   return (
     <>
-      <Modal.Header closeButton>
-        <Modal.Title>{t('modal.addChannel.header')}</Modal.Title>
-      </Modal.Header>
+      <MyModalHeader type="add" />
       <Modal.Body>
         <Form onSubmit={submit}>
           <Form.Control
@@ -47,14 +46,7 @@ const ModalAdd = () => {
           />
           <label className="visually-hidden" htmlFor="name">{t('modal.addChannel.label')}</label>
           <div className="invalid-feedback">{error ? t('modal.addChannel.error') : ''}</div>
-          <div className="d-flex justify-content-end">
-            <Button className="me-2 btn btn-secondary" onClick={() => dispatch(closeModal())}>
-              {t('modal.cancel')}
-            </Button>
-            <Button className="btn btn-primary" type="submit">
-              {t('modal.send')}
-            </Button>
-          </div>
+          <MyFooter />
         </Form>
       </Modal.Body>
     </>

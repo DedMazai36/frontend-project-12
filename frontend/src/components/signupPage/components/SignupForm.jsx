@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import routes from '../../../routes.js';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
+import saveToken from '../../fromComponents/saveToken.js';
 
 const SignupForm = () => {
   const { setAuth } = useAuthContext();
@@ -28,9 +29,7 @@ const SignupForm = () => {
       validationSchema={SignupSchema}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.signupPath(), { username, password }).then((response) => {
-          const { token } = response.data;
-          localStorage.setItem('token', token);
-          localStorage.setItem('login', username);
+          saveToken(response.data.token, username);
           setAuth(true);
         })
           .catch(() => {

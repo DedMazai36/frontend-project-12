@@ -16,6 +16,9 @@ import SignupPage from './components/signupPage/SignupPage';
 
 const App = () => {
   const { auth } = useAuthContext();
+  const chatRoute = routes.chatRoute();
+  const loginRoute = routes.loginRoute();
+  const signupRoute = routes.signupRoute();
 
   const rollbarConfig = {
     accessToken: '6ca2bbbfc6b14670a0cfe830f7a6e706',
@@ -29,21 +32,21 @@ const App = () => {
           <Routes>
             <Route path="*" element={<NotFound />} />
             <Route
-              path={routes.chatRoute()}
+              path={chatRoute}
               element={
-                auth ? <MainPage /> : <Navigate to={routes.loginRoute()} />
+                auth ? <MainPage /> : <Navigate to={loginRoute} />
               }
             />
             <Route
-              path={routes.loginRoute()}
+              path={loginRoute}
               element={
-                auth ? <Navigate to={routes.chatRoute()} /> : <LoginPage />
+                auth ? <Navigate to={chatRoute} /> : <LoginPage />
               }
             />
             <Route
-              path={routes.signupRoute()}
+              path={signupRoute}
               element={
-                auth ? <Navigate to={routes.chatRoute()} /> : <SignupPage />
+                auth ? <Navigate to={chatRoute} /> : <SignupPage />
               }
             />
           </Routes>

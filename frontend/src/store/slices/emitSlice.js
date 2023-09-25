@@ -80,41 +80,25 @@ const emitSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(sendMessgae.fulfilled, (state, { payload }) => {
-        if (payload === 'ok') {
-          state.status = 'send';
-        } else {
-          state.status = 'error';
-        }
+        state.status = (payload === 'ok') ? 'send' : 'error';
       })
       .addCase(addChannel.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(addChannel.fulfilled, (state, { payload }) => {
-        if (payload === 'ok') {
-          state.status = 'add';
-        } else {
-          state.status = 'error';
-        }
+        state.status = (payload === 'ok') ? 'add' : 'error';
       })
       .addCase(removeChannel.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(removeChannel.fulfilled, (state, { payload }) => {
-        if (payload === 'ok') {
-          state.status = 'remove';
-        } else {
-          state.status = 'error';
-        }
+        state.status = (payload === 'ok') ? 'remove' : 'error';
       })
       .addCase(renameChannel.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(renameChannel.fulfilled, (state, { payload }) => {
-        if (payload === 'ok') {
-          state.status = 'rename';
-        } else {
-          state.status = 'error';
-        }
+        state.status = (payload === 'ok') ? 'rename' : 'error';
       });
   },
 });

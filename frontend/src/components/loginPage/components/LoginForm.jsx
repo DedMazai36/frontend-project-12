@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import routes from '../../../routes.js';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
+import saveToken from '../../fromComponents/saveToken.js';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
@@ -14,9 +15,7 @@ export const LoginForm = () => {
       initialValues={{ username: '', password: '' }}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.loginPath(), { username, password }).then((response) => {
-          const { token } = response.data;
-          localStorage.setItem('token', token);
-          localStorage.setItem('login', username);
+          saveToken(response.data.token, username);
           setAuth(true);
         }).catch((e) => {
           if (e.code === 'ERR_BAD_REQUEST') {

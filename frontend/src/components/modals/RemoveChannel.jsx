@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { closeModal } from '../../store/slices/modalSlice';
 import { clearStatus, removeChannel } from '../../store/slices/emitSlice';
+import MyModalHeader from './components/Header';
 
 const ModalRemove = () => {
   const channelID = useSelector((state) => state.modal.data);
@@ -20,9 +21,7 @@ const ModalRemove = () => {
 
   return (
     <>
-      <Modal.Header closeButton>
-        <Modal.Title>{t('modal.deleteChannel.header')}</Modal.Title>
-      </Modal.Header>
+      <MyModalHeader type="remove" />
       <Modal.Body>
         <p className="lead">{t('modal.deleteChannel.label')}</p>
         <div className="d-flex justify-content-end">
