@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5001",
   "dependencies": {
-    "@fastify/static": "^6.11.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@rollbar/react": "^0.11.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -51,7 +50,6 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^20.7.0",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-functional": "^6.0.0",
