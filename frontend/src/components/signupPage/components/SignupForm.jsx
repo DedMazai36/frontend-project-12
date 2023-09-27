@@ -46,7 +46,7 @@ const SignupForm = () => {
             <Field
               name="username"
               autoComplete="username"
-              required=""
+              required
               placeholder={t('signup.form.userPlaceHolder')}
               id="username"
               className={clsx('form-control', errors.username && 'is-invalid')}
@@ -62,7 +62,7 @@ const SignupForm = () => {
             <Field
               name="password"
               autoComplete="current-password"
-              required=""
+              required
               placeholder={t('signup.form.passPlaceHolder')}
               type="password"
               id="password"
@@ -79,7 +79,7 @@ const SignupForm = () => {
             <Field
               name="confirmPassword"
               autoComplete="current-password"
-              required=""
+              required
               placeholder={t('signup.form.passSubmitPlaceHolder')}
               type="password"
               id="confirmPassword"

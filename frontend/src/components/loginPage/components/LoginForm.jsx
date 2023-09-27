@@ -18,7 +18,7 @@ export const LoginForm = () => {
           saveToken(response.data.token, username);
           setAuth(true);
         }).catch((e) => {
-          if (e.code === 'ERR_BAD_REQUEST') {
+          if (e.response.status === 401) {
             setFieldError('username', ' ');
             setFieldError('password', t('login.form.error'));
           }
@@ -32,7 +32,7 @@ export const LoginForm = () => {
             <Field
               name="username"
               autoComplete="username"
-              required=""
+              required
               placeholder={t('login.form.userPlaxeHolder')}
               id="username"
               autoFocus
@@ -47,7 +47,7 @@ export const LoginForm = () => {
             <Field
               name="password"
               autoComplete="current-password"
-              required=""
+              required
               placeholder={t('login.form.passPlaceHolder')}
               type="password"
               id="password"
