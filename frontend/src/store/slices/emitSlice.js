@@ -1,17 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { io } from 'socket.io-client';
 import * as filter from 'leo-profanity';
+import { trimStart } from 'lodash';
+import socket from '../../context/webSoket';
 
-export const socket = io();
-
-filter.list();
-filter.clearList();
-filter.add(filter.getDictionary('en'));
-filter.add(filter.getDictionary('ru'));
+const sliseName = 'emit';
 
 export const sendMessgae = createAsyncThunk(
-  'data/sendMessgae',
+  `${sliseName}/sendMessage`,
   async (payload) => {
     const filterValue = filter.clean(payload.text);
 
@@ -26,7 +22,7 @@ export const sendMessgae = createAsyncThunk(
 );
 
 export const addChannel = createAsyncThunk(
-  'data/addChannel',
+  `${sliseName}/addChannel`,
   async (payload) => {
     const response = await new Promise((resolve) => {
       socket.emit('newChannel', { name: payload }, (data) => {
@@ -39,7 +35,7 @@ export const addChannel = createAsyncThunk(
 );
 
 export const removeChannel = createAsyncThunk(
-  'data/removeChannel',
+  `${sliseName}/removeChannel`,
   async (id) => {
     const response = await new Promise((resolve) => {
       socket.emit('removeChannel', { id }, (data) => {
@@ -52,7 +48,7 @@ export const removeChannel = createAsyncThunk(
 );
 
 export const renameChannel = createAsyncThunk(
-  'data/renameChannel',
+  `${sliseName}/renameChannel`,
   async ({ id, name }) => {
     const response = await new Promise((resolve) => {
       socket.emit('renameChannel', { id, name }, (data) => {
@@ -64,44 +60,36 @@ export const renameChannel = createAsyncThunk(
   },
 );
 
+const loadingTypesRegExp = /(\/pending|\/fulfilled|\/rejected)$/;
+
 const emitSlice = createSlice({
-  name: 'emit',
+  name: sliseName,
   initialState: {
-    status: null,
+    sendMessgae: null,
+    addChannel: null,
+    removeChannel: null,
+    renameChannel: null,
   },
   reducers: {
     clearStatus(state) {
-      state.status = null;
+      Object.keys(state).forEach((key) => { state[key] = null; });
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessgae.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(sendMessgae.fulfilled, (state, { payload }) => {
-        state.status = (payload === 'ok') ? 'send' : 'error';
-      })
-      .addCase(addChannel.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(addChannel.fulfilled, (state, { payload }) => {
-        state.status = (payload === 'ok') ? 'add' : 'error';
-      })
-      .addCase(removeChannel.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(removeChannel.fulfilled, (state, { payload }) => {
-        state.status = (payload === 'ok') ? 'remove' : 'error';
-      })
-      .addCase(renameChannel.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(renameChannel.fulfilled, (state, { payload }) => {
-        state.status = (payload === 'ok') ? 'rename' : 'error';
-      });
+      .addMatcher(
+        (action) => loadingTypesRegExp.test(action.type) && action.type.includes(sliseName),
+        (state, action) => {
+          const [match] = action.type.match(loadingTypesRegExp);
+          const fetchingStatus = trimStart(match, '/');
+          const actionType = action.type.replace(loadingTypesRegExp, '').replace(`${sliseName}/`, '');
+          state[actionType] = fetchingStatus;
+        },
+      );
   },
 });
+
+export const getEmitStatus = (type) => (state) => state[sliseName][type];
 
 export const { clearStatus } = emitSlice.actions;
 export default emitSlice.reducer;

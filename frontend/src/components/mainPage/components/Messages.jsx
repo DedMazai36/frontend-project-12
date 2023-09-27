@@ -1,35 +1,37 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
 import { sendMessgae } from '../../../store/slices/emitSlice';
-import { selectors } from '../../../store/slices/messagesSlice';
-import { getCurrentChannelId, getCurrentChannelName } from '../../../store/slices/channelsSlice';
+import { messagesSelectors } from '../../../store/slices/messagesSlice';
+import { channelsSelectors } from '../../../store/slices/channelsSlice';
+import { useAuthContext } from '../../../context/AuthContext';
 
 const Messages = () => {
-  const [input, setInput] = useState('');
-  const messages = useSelector(selectors.selectAll);
-  const currentChannelId = useSelector(getCurrentChannelId);
-  const currentChannelName = useSelector(getCurrentChannelName);
+  const messages = useSelector(messagesSelectors.adapter.selectAll);
+  const currentChannelId = useSelector(channelsSelectors.selectCurrentChannelId);
+  const currentChannelName = useSelector(channelsSelectors.selectCurrentChannelName);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const chat = useRef();
   const inputElement = useRef();
+  const { getName } = useAuthContext();
 
-  function handleChangeMessage(event) {
-    setInput(event.target.value);
-  }
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: ({ message }) => {
+      formik.resetForm({ message: '' });
+      return dispatch(sendMessgae({
+        text: message,
+        username: getName,
+        channelID: currentChannelId,
+      }));
+    },
+  });
 
-  function submit(event) {
-    event.preventDefault();
-
-    dispatch(sendMessgae({
-      text: input,
-      username: localStorage.getItem('login') || 'unknown',
-      channelID: currentChannelId,
-    }));
-
-    setInput('');
-  }
+  const currentMessages = messages.filter((message) => message.channelID === currentChannelId);
 
   useEffect(() => {
     inputElement.current.focus();
@@ -43,36 +45,36 @@ const Messages = () => {
           <p className="m-0">
             <b>{`# ${currentChannelName}`}</b>
           </p>
-          <span className="text-muted">{t('main.chat.messages', { count: messages.filter((message) => message.channelID === currentChannelId).length })}</span>
+          <span className="text-muted">{t('main.chat.messages', { count: currentMessages.length })}</span>
         </div>
         <div
           id="messages-box"
           className="chat-messages overflow-auto px-5"
           ref={chat}
         >
-          {messages.map((message) => (message.channelID === currentChannelId ? (
+          {currentMessages.map((message) => (
             <div key={message.id} className="text-break mb-2">
               <b>{message.username}</b>
               {': '}
               {message.body}
             </div>
-          ) : null))}
+          ))}
         </div>
         <div className="mt-auto px-5 py-3">
-          <form noValidate="" className="py-1 border rounded-2" onSubmit={submit}>
+          <form noValidate="" className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
             <div className="input-group has-validation">
               <input
-                name="body"
+                name="message"
                 aria-label={t('main.chat.input.label')}
                 placeholder={t('main.chat.input.placeHolder')}
                 className="border-0 p-0 ps-2 form-control"
-                value={input}
-                onChange={handleChangeMessage}
+                value={formik.values.message}
+                onChange={formik.handleChange}
                 ref={inputElement}
               />
               <button
                 type="submit"
-                disabled={!input}
+                disabled={!formik.values.message}
                 className="btn btn-group-vertical"
               >
                 <svg

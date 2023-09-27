@@ -4,10 +4,8 @@ import React from 'react';
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 import { ToastContainer } from 'react-toastify';
 import { useAuthContext } from './context/AuthContext';
-import './i18n';
 import routes from './routes';
 import LoginPage from './components/loginPage/LoginPage';
 import NotFound from './components/notFoundPage/notFound';
@@ -20,40 +18,31 @@ const App = () => {
   const loginRoute = routes.loginRoute();
   const signupRoute = routes.signupRoute();
 
-  const rollbarConfig = {
-    accessToken: '6ca2bbbfc6b14670a0cfe830f7a6e706',
-    environment: 'testenv',
-  };
-
   return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<NotFound />} />
-            <Route
-              path={chatRoute}
-              element={
-                auth ? <MainPage /> : <Navigate to={loginRoute} />
-              }
-            />
-            <Route
-              path={loginRoute}
-              element={
-                auth ? <Navigate to={chatRoute} /> : <LoginPage />
-              }
-            />
-            <Route
-              path={signupRoute}
-              element={
-                auth ? <Navigate to={chatRoute} /> : <SignupPage />
-              }
-            />
-          </Routes>
-          <ToastContainer />
-        </BrowserRouter>
-      </ErrorBoundary>
-    </Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={<NotFound />} />
+        <Route
+          path={chatRoute}
+          element={
+            auth ? <MainPage /> : <Navigate to={loginRoute} />
+          }
+        />
+        <Route
+          path={loginRoute}
+          element={
+            auth ? <Navigate to={chatRoute} /> : <LoginPage />
+          }
+        />
+        <Route
+          path={signupRoute}
+          element={
+            auth ? <Navigate to={chatRoute} /> : <SignupPage />
+          }
+        />
+      </Routes>
+      <ToastContainer />
+    </BrowserRouter>
   );
 };
 

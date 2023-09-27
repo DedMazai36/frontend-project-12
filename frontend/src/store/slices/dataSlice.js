@@ -46,5 +46,7 @@ const dataSlice = createSlice({
   },
 });
 
+export const getError = (state) => state.data.error;
+
 export const { clearError } = dataSlice.actions;
 export default dataSlice.reducer;

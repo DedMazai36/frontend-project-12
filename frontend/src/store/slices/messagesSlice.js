@@ -32,7 +32,7 @@ const messagesSlice = createSlice({
 });
 
 export const { addMessage, addMessages } = messagesSlice.actions;
-
-export const selectors = messagesAdapter.getSelectors((state) => state.messages);
-
+export const messagesSelectors = {
+  adapter: messagesAdapter.getSelectors((state) => state.messages),
+};
 export default messagesSlice.reducer;

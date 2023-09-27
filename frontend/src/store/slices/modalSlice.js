@@ -9,29 +9,19 @@ const modalSlice = createSlice({
     show: false,
   },
   reducers: {
-    addModal(state) {
-      state.type = 'add';
-      state.show = true;
-    },
-    renameModal(state, { payload }) {
-      state.data = payload;
-      state.type = 'rename';
-      state.show = true;
-    },
-    removeModal(state, { payload }) {
-      state.data = payload;
-      state.type = 'remove';
-      state.show = true;
-    },
     closeModal(state) {
       state.data = null;
       state.type = '';
       state.show = false;
     },
+    openModal(state, { payload }) {
+      state.data = payload.data;
+      state.type = payload.type;
+      state.show = true;
+    },
   },
 });
 
-export const {
-  addModal, renameModal, removeModal, closeModal,
-} = modalSlice.actions;
+export const { openModal, closeModal } = modalSlice.actions;
+export const getModalData = (state) => state.modal.data;
 export default modalSlice.reducer;

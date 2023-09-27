@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import _ from 'lodash';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { closeModal } from '../../store/slices/modalSlice';
-import { addChannel, clearStatus } from '../../store/slices/emitSlice';
-import { selectors } from '../../store/slices/channelsSlice';
+import { addChannel } from '../../store/slices/emitSlice';
+import { channelsSelectors } from '../../store/slices/channelsSlice';
 import MyFooter from './components/Footer';
 import MyModalHeader from './components/Header';
 
 const ModalAdd = () => {
   const { t } = useTranslation();
-  const channels = useSelector(selectors.selectAll);
+  const channels = useSelector(channelsSelectors.adapter.selectAll);
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
 
@@ -26,8 +25,6 @@ const ModalAdd = () => {
       setError(null);
       dispatch(addChannel(inputValue));
       dispatch(closeModal());
-      toast.success(t('toast.success.addChannel'));
-      dispatch(clearStatus());
     } else {
       setError('error');
     }

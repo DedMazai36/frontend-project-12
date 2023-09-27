@@ -1,14 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { renameModal, removeModal } from '../../../store/slices/modalSlice';
-import { changeCurrentChannelId, getCurrentChannelId, selectors } from '../../../store/slices/channelsSlice';
+import { toast } from 'react-toastify';
+import clsx from 'clsx';
+import { openModal } from '../../../store/slices/modalSlice';
+import { changeCurrentChannelId, channelsSelectors } from '../../../store/slices/channelsSlice';
+import { clearStatus, getEmitStatus } from '../../../store/slices/emitSlice';
 
 const ChannelsList = () => {
-  const channels = useSelector(selectors.selectAll);
-  const currentChannelId = useSelector(getCurrentChannelId);
+  const channels = useSelector(channelsSelectors.adapter.selectAll);
+  const currentChannelId = useSelector(channelsSelectors.selectCurrentChannelId);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const statusAdd = useSelector(getEmitStatus('addChannel'));
+  const statusRemove = useSelector(getEmitStatus('removeChannel'));
+  const statusRename = useSelector(getEmitStatus('renameChannel'));
+
+  useEffect(() => {
+    if (statusAdd === 'fulfilled') {
+      toast.success(t('toast.success.addChannel'));
+      dispatch(clearStatus());
+    }
+    if (statusRemove === 'fulfilled') {
+      toast.success(t('toast.success.removeChannel'));
+      dispatch(clearStatus());
+    }
+    if (statusRename === 'fulfilled') {
+      toast.success(t('toast.success.renameChannel'));
+      dispatch(clearStatus());
+    }
+    if (statusAdd === 'rejected' || statusRemove === 'rejected' || statusRename === 'rejected') {
+      toast.error(t('toast.error.errorSend'));
+      dispatch(clearStatus());
+    }
+  });
 
   return (
     <ul
@@ -21,9 +46,9 @@ const ChannelsList = () => {
             <button
               type="button"
               onClick={() => {
-                dispatch(changeCurrentChannelId({ id: channel.id, name: channel.name }));
+                dispatch(changeCurrentChannelId({ id: channel.id }));
               }}
-              className={currentChannelId === channel.id ? 'w-100 rounded-0 text-start btn btn-secondary' : 'w-100 rounded-0 text-start btn'}
+              className={clsx('w-100 rounded-0 text-start btn', currentChannelId === channel.id && 'btn-secondary')}
             >
               <span className="me-1">#</span>
               {channel.name}
@@ -35,7 +60,7 @@ const ChannelsList = () => {
                   id="react-aria6940569620-1"
                   aria-expanded="false"
                   data-bs-toggle="dropdown"
-                  className={currentChannelId === channel.id ? 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary' : 'flex-grow-0 dropdown-toggle dropdown-toggle-split btn'}
+                  className={clsx('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', currentChannelId === channel.id && 'btn-secondary')}
                 >
                   <span className="visually-hidden">{t('main.channels.management')}</span>
                 </button>
@@ -57,7 +82,7 @@ const ChannelsList = () => {
                     role="button"
                     tabIndex={0}
                     href="/"
-                    onClick={(e) => { e.preventDefault(); dispatch(removeModal(channel.id)); }}
+                    onClick={(e) => { e.preventDefault(); dispatch(openModal({ type: 'remove', data: channel.id })); }}
                   >
                     {t('main.channels.delete')}
                   </a>
@@ -67,7 +92,7 @@ const ChannelsList = () => {
                     role="button"
                     tabIndex={0}
                     href="/"
-                    onClick={(e) => { e.preventDefault(); dispatch(renameModal(channel)); }}
+                    onClick={(e) => { e.preventDefault(); dispatch(openModal({ type: 'rename', data: channel })); }}
                   >
                     {t('main.channels.rename')}
                   </a>

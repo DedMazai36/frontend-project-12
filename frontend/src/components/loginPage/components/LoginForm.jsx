@@ -2,13 +2,13 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import routes from '../../../routes.js';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
-import saveToken from '../../fromComponents/saveToken.js';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
-  const { setAuth } = useAuthContext();
+  const { setAuth, saveToken } = useAuthContext();
 
   return (
     <Formik
@@ -36,7 +36,7 @@ export const LoginForm = () => {
               placeholder={t('login.form.userPlaxeHolder')}
               id="username"
               autoFocus
-              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+              className={clsx('form-control', errors.username && 'is-invalid')}
             />
             {errors.username && touched.username ? (
               <div className="invalid-tooltip">{errors.username}</div>
@@ -51,7 +51,7 @@ export const LoginForm = () => {
               placeholder={t('login.form.passPlaceHolder')}
               type="password"
               id="password"
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+              className={clsx('form-control', errors.password && 'is-invalid')}
             />
             {errors.password ? (
               <div className="invalid-tooltip">{errors.password}</div>

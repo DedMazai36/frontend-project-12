@@ -3,12 +3,12 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import routes from '../../../routes.js';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
-import saveToken from '../../fromComponents/saveToken.js';
 
 const SignupForm = () => {
-  const { setAuth } = useAuthContext();
+  const { setAuth, saveToken } = useAuthContext();
   const { t } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
@@ -49,7 +49,7 @@ const SignupForm = () => {
               required=""
               placeholder={t('signup.form.userPlaceHolder')}
               id="username"
-              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+              className={clsx('form-control', errors.username && 'is-invalid')}
             />
             {errors.username && touched.username ? (
               <div className="invalid-tooltip">
@@ -66,7 +66,7 @@ const SignupForm = () => {
               placeholder={t('signup.form.passPlaceHolder')}
               type="password"
               id="password"
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+              className={clsx('form-control', errors.password && 'is-invalid')}
             />
             {errors.password ? (
               <div className="invalid-tooltip">{errors.password}</div>
@@ -83,7 +83,7 @@ const SignupForm = () => {
               placeholder={t('signup.form.passSubmitPlaceHolder')}
               type="password"
               id="confirmPassword"
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+              className={clsx('form-control', errors.confirmPassword && 'is-invalid')}
             />
             {errors.confirmPassword ? (
               <div className="invalid-tooltip">{errors.confirmPassword}</div>
