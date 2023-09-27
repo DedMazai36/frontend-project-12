@@ -6,7 +6,7 @@
 
 Chat application on React with a local server part.
 
-[App is deployed on Render.com](https://chat-swef.onrender.com)
+[App is deployed on Render.com](https://chat-mmd5.onrender.com)
 
 ## Build
 
