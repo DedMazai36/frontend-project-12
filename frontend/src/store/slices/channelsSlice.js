@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import _ from 'lodash';
 import { fetchData } from './dataSlice';
 
 const channelsAdapter = createEntityAdapter({
@@ -53,10 +52,10 @@ export const channelsSelectors = {
   adapter: channelsAdapter.getSelectors((state) => state.channels),
   selectCurrentChannelId: (state) => state.channels.currentChannelId,
   selectCurrentChannelName: (state) => {
-    const id = state.channels.currentChannelId;
-    const currentChannel = _.find(state.channels.entities, (channel) => channel.id === id);
-    const name = currentChannel ? currentChannel.name : 'undefined';
-    return name;
+    const id = channelsSelectors.selectCurrentChannelId(state);
+    const currentChannel = channelsSelectors.adapter.selectById(state, id);
+
+    return currentChannel?.name || 'undefined';
   },
 };
 export default channelsSlice.reducer;

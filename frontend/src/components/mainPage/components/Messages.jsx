@@ -15,7 +15,7 @@ const Messages = () => {
   const dispatch = useDispatch();
   const chat = useRef();
   const inputElement = useRef();
-  const { getName } = useAuthContext();
+  const { username } = useAuthContext();
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +25,7 @@ const Messages = () => {
       formik.resetForm({ message: '' });
       return dispatch(sendMessgae({
         text: message,
-        username: getName,
+        username,
         channelID: currentChannelId,
       }));
     },

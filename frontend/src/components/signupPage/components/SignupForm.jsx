@@ -8,7 +8,7 @@ import routes from '../../../routes.js';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 const SignupForm = () => {
-  const { setAuth, saveToken } = useAuthContext();
+  const { login } = useAuthContext();
   const { t } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
@@ -29,8 +29,7 @@ const SignupForm = () => {
       validationSchema={SignupSchema}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.signupPath(), { username, password }).then((response) => {
-          saveToken(response.data.token, username);
-          setAuth(true);
+          login(response.data.token, username);
         })
           .catch(() => {
             setFieldError('username', ' ');

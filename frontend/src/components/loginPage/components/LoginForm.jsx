@@ -8,15 +8,14 @@ import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
-  const { setAuth, saveToken } = useAuthContext();
+  const { login } = useAuthContext();
 
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
       onSubmit={({ username, password }, { setFieldError }) => {
         axios.post(routes.loginPath(), { username, password }).then((response) => {
-          saveToken(response.data.token, username);
-          setAuth(true);
+          login(response.data.token, username);
         }).catch((e) => {
           if (e.response.status === 401) {
             setFieldError('username', ' ');

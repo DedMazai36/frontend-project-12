@@ -7,10 +7,12 @@ import Messages from './components/Messages';
 import MyModal from '../modals/Modal';
 import MyNav from '../header/Header';
 import { clearError, fetchData, getError } from '../../store/slices/dataSlice';
+import { useAuthContext } from '../../context/AuthContext';
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { token } = useAuthContext();
 
   const fetchError = useSelector(getError);
 
@@ -20,8 +22,8 @@ const MainPage = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    dispatch(fetchData(token));
+  }, [dispatch, token]);
 
   return (
     <>

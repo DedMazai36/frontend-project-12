@@ -1,22 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../context/AuthContext';
 import routes from '../../routes';
 
 const MyNav = () => {
   const { t } = useTranslation();
-  const { setAuth } = useAuthContext();
-  const { auth } = useAuthContext();
+  const { unlogin, isAuth } = useAuthContext();
 
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href={routes.chatRoute()}>
+        <Link className="navbar-brand" to={routes.chatRoute()}>
           {t('header.hexlet')}
-        </a>
+        </Link>
         {
-          auth ? (
-            <button type="button" className="btn btn-primary" onClick={() => { localStorage.clear(); setAuth(false); }}>
+          isAuth ? (
+            <button type="button" className="btn btn-primary" onClick={unlogin}>
               {t('header.escape')}
             </button>
           ) : null

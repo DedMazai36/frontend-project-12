@@ -5,20 +5,36 @@ import React, {
 const AuthContext = createContext();
 
 const MyAuthContextProvider = ({ children }) => {
-  const [auth, setAuth] = useState(!!localStorage.getItem('token'));
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [username, setUsername] = useState(() => localStorage.getItem('login'));
 
-  const saveToken = (token, username) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('login', username);
+  const unlogin = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('login');
+    setToken(null);
+    setUsername(null);
   };
-  const getName = localStorage.getItem('login');
-  const getToken = localStorage.getItem('token');
+  const isAuth = !!token;
+
+  const authContextValue = useMemo(() => {
+    const login = (newToken, newUsername) => {
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('login', newUsername);
+      setToken(newToken);
+      setUsername(newUsername);
+    };
+
+    return {
+      token,
+      username,
+      isAuth,
+      login,
+      unlogin,
+    };
+  }, [isAuth, token, username]);
 
   return (
-    <AuthContext.Provider value={useMemo(() => ({
-      auth, setAuth, saveToken, getName, getToken,
-    }), [auth, setAuth, getName, getToken])}
-    >
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );

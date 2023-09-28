@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import MyLoginForm from './components/LoginForm';
 import logo from '../../assets/avatar.jpg';
 import routes from '../../routes';
@@ -26,7 +27,7 @@ const LoginPage = () => {
                   <div className="card-footer p-4">
                     <div className="text-center">
                       <span>{t('login.footer.question')}</span>
-                      <a href={routes.signupRoute()}>{t('login.footer.href')}</a>
+                      <Link to={routes.signupRoute()}>{t('login.footer.href')}</Link>
                     </div>
                   </div>
                 </div>

@@ -13,7 +13,7 @@ import MainPage from './components/mainPage/MainPage';
 import SignupPage from './components/signupPage/SignupPage';
 
 const App = () => {
-  const { auth } = useAuthContext();
+  const { isAuth } = useAuthContext();
   const chatRoute = routes.chatRoute();
   const loginRoute = routes.loginRoute();
   const signupRoute = routes.signupRoute();
@@ -25,19 +25,19 @@ const App = () => {
         <Route
           path={chatRoute}
           element={
-            auth ? <MainPage /> : <Navigate to={loginRoute} />
+            isAuth ? <MainPage /> : <Navigate to={loginRoute} />
           }
         />
         <Route
           path={loginRoute}
           element={
-            auth ? <Navigate to={chatRoute} /> : <LoginPage />
+            isAuth ? <Navigate to={chatRoute} /> : <LoginPage />
           }
         />
         <Route
           path={signupRoute}
           element={
-            auth ? <Navigate to={chatRoute} /> : <SignupPage />
+            isAuth ? <Navigate to={chatRoute} /> : <SignupPage />
           }
         />
       </Routes>

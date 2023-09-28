@@ -1,12 +1,12 @@
 import Modal from 'react-bootstrap/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { closeModal } from '../../store/slices/modalSlice';
+import { closeModal, getModalState } from '../../store/slices/modalSlice';
 import ModalAdd from './AddChannel';
 import ModalRename from './RenameChannel';
 import ModalRemove from './RemoveChannel';
 
 const MyModal = () => {
-  const modalData = useSelector((state) => state.modal);
+  const modalState = useSelector(getModalState);
   const dispatch = useDispatch();
   const modals = {
     add: ModalAdd,
@@ -14,10 +14,10 @@ const MyModal = () => {
     rename: ModalRename,
   };
 
-  const Component = modals[modalData.type];
+  const Component = modals[modalState.type];
 
   return (
-    <Modal show={modalData.show} onHide={() => dispatch(closeModal())} centered>
+    <Modal show={modalState.show} onHide={() => dispatch(closeModal())} centered>
       {Component && <Component />}
     </Modal>
   );
